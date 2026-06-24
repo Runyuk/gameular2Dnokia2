@@ -263,12 +263,17 @@ window.onload = function() {
         const deltaX = e.changedTouches[0].clientX - touchStartX;
         const deltaY = e.changedTouches[0].clientY - touchStartY;
         
+        let ndx = nextDx, ndy = nextDy;
         if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 30) {
-            if (deltaX > 0 && dx !== -1) { dx = 1; dy = 0; }
-            else if (deltaX < 0 && dx !== 1) { dx = -1; dy = 0; }
+            if (deltaX > 0) { ndx = 1; ndy = 0; }
+            else if (deltaX < 0) { ndx = -1; ndy = 0; }
         } else if (Math.abs(deltaY) > 30) {
-            if (deltaY > 0 && dy !== -1) { dx = 0; dy = 1; }
-            else if (deltaY < 0 && dy !== 1) { dx = 0; dy = -1; }
+            if (deltaY > 0) { ndx = 0; ndy = 1; }
+            else if (deltaY < 0) { ndx = 0; ndy = -1; }
+        }
+        // prevent reversing relative to last applied direction
+        if (!(ndx === -lastDx && ndy === -lastDy)) {
+            nextDx = ndx; nextDy = ndy;
         }
     });
 
